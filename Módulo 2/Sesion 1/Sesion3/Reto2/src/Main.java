@@ -24,10 +24,16 @@ public class Main {
         sucursales.stream()
                 .flatMap(sucursal ->
                         sucursal.getEncuestas().stream()
+//                                Nos quedamos solo con las encuestas insatisfechas con calificación menos o igual a 3
                                 .filter(encuesta -> encuesta.getCalificacion() <= 3)
+//                                Por cada encuesta filtrada obtenemos el comentario usando Optional
+//                                Permitiendo manejar comentarios null
                                 .flatMap(encuesta -> encuesta.getComentario()
+//                                        Este es en casod e que aveces el comentario no sea null sino el texto null una cadena literal
+//                                        Con esto se eliminan esos casos
                                         .filter(c -> !c.equalsIgnoreCase("null")) // evita comentarios "null" como texto
-                                        .map(comentario ->
+//                                        Transformamos cada comentario en un mensaje para el area, inlcuyend el nombre de la sucursal
+                                                .map(comentario ->
                                                 "Sucursal " + sucursal.getNombre() + ": Seguimiento a paciente con comentario: \"" + comentario + "\""
                                         )
                                         .stream()
